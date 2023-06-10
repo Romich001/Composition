@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.romanvoytyuk.composition.R
-import com.romanvoytyuk.composition.databinding.FragmentGameBinding
 import com.romanvoytyuk.composition.databinding.FragmentGameFinishedBinding
 import com.romanvoytyuk.composition.domain.enteties.GameResult
-import com.romanvoytyuk.composition.domain.enteties.GameSettings
 
 
 class GameFinishedFragment : Fragment() {
@@ -28,7 +25,9 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun parsArgs() {
-        gameResult = requireArguments().getSerializable(KEY_GAME_RESULT) as GameResult
+        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
+            gameResult = it
+        }
     }
 
     override fun onCreateView(
@@ -69,7 +68,7 @@ class GameFinishedFragment : Fragment() {
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_GAME_RESULT, gameResult)
+                    putParcelable(KEY_GAME_RESULT, gameResult)
                 }
             }
         }
