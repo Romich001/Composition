@@ -33,7 +33,7 @@ object GameRepositoryImp : GameRepository {
         while (options.size < countOfOptions) {
             options.add(Random.nextInt(from, to))
         }
-        return options.toList()
+        return options.toList().shuffled()
     }
 
     override fun getGameSettings(level: Level): GameSettings {
