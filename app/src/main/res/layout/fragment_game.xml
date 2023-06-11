@@ -55,12 +55,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_green_light"
+        android:text="@string/QuestionMark"
         app:layout_constraintBottom_toBottomOf="@id/visible_number"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/visible_number"
         app:layout_constraintTop_toTopOf="@id/visible_number"
-        tools:text="/?" />
+        />
 
     <TextView
         android:id="@+id/tv_option3"
