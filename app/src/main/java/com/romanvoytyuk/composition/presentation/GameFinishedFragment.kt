@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.romanvoytyuk.composition.R
 import com.romanvoytyuk.composition.databinding.FragmentGameFinishedBinding
 import com.romanvoytyuk.composition.domain.enteties.GameResult
@@ -84,19 +84,9 @@ class GameFinishedFragment : Fragment() {
 
     private fun setNavigation() {
         binding.buttonRetry.setOnClickListener {
-            retry()
+            findNavController().popBackStack()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retry()
-                }
 
-            })
-    }
-
-    private fun retry() {
-        requireActivity().supportFragmentManager.popBackStack(GameFragment.NAME, 1)
     }
 
     override fun onDestroyView() {
@@ -106,7 +96,7 @@ class GameFinishedFragment : Fragment() {
 
     companion object {
 
-        private const val KEY_GAME_RESULT = "game result"
+        const val KEY_GAME_RESULT = "game result"
 
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
