@@ -5,12 +5,14 @@ import android.content.res.ColorStateList
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.romanvoytyuk.composition.R
 import com.romanvoytyuk.composition.domain.enteties.GameResult
 
+interface OnOptionClickListener {
+    fun onOptionClick(option: Int)
+}
 
 @BindingAdapter("requiredAnswers")
 fun setRequiredAnswers(tv: TextView, count: Int) {
@@ -82,6 +84,13 @@ fun bindEnoughCount(tv: TextView, state: Boolean) {
 fun bindEnoughPercent(progressBar: ProgressBar, state: Boolean) {
     progressBar.progressTintList =
         ColorStateList.valueOf(getColorByState(progressBar.context, state))
+}
+
+@BindingAdapter("onOptionClickListener")
+fun bindOnOptionClickListener(tv: TextView, clickListener: OnOptionClickListener) {
+    tv.setOnClickListener {
+        clickListener.onOptionClick(tv.text.toString().toInt())
+    }
 }
 
 private fun getColorByState(context: Context, state: Boolean): Int {
