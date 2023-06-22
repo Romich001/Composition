@@ -54,7 +54,9 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setObservers()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        setGameResultObserver()
         setOptionsClickListeners()
 
     }
@@ -67,13 +69,6 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun setObservers() {
-        setTimerObserver()
-        setProgressAnswersObservers()
-        setQuestionObserver()
-        setProgressBarObserver()
-        setGameResultObserver()
-    }
 
     private fun setGameResultObserver() {
         viewModel.gameResult.observe(viewLifecycleOwner) {
@@ -81,59 +76,6 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun setProgressBarObserver() {
-        viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.progressBar.setProgress(it, true)
-        }
-        viewModel.enoughPercentOfRightAnswers.observe(viewLifecycleOwner) {
-            val color = getColorByState(it)
-            binding.progressBar.progressTintList = ColorStateList.valueOf(color)
-
-        }
-        viewModel.minPercent.observe(viewLifecycleOwner) {
-            binding.progressBar.secondaryProgress = it
-        }
-    }
-
-    private fun setQuestionObserver() {
-        viewModel.question.observe(viewLifecycleOwner) {
-            val (sum, visibleNumber, options) = it
-            binding.tvSum.text = sum.toString()
-            binding.visibleNumber.text = visibleNumber.toString()
-            setOptionValues(options)
-        }
-    }
-
-    private fun setOptionValues(options: List<Int>) {
-        tvOptions.forEachIndexed { index, textView ->
-            textView.text = options[index].toString()
-        }
-    }
-
-    private fun setProgressAnswersObservers() {
-        viewModel.progressAnswers.observe(viewLifecycleOwner) {
-            binding.tvAnswersProgress.text = it
-        }
-        viewModel.enoughCountOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.tvAnswersProgress.setTextColor(getColorByState(it))
-        }
-    }
-
-    private fun getColorByState(state: Boolean): Int {
-        val colorResId = if (state) {
-            android.R.color.holo_green_light
-        } else {
-            android.R.color.holo_red_light
-        }
-        return ContextCompat.getColor(requireContext(), colorResId)
-    }
-
-
-    private fun setTimerObserver() {
-        viewModel.formattedTime.observe(viewLifecycleOwner) {
-            binding.tvTimer.text = it
-        }
-    }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
         findNavController().navigate(

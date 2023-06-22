@@ -1,10 +1,16 @@
 package com.romanvoytyuk.composition.presentation
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.romanvoytyuk.composition.R
 import com.romanvoytyuk.composition.domain.enteties.GameResult
+
 
 @BindingAdapter("requiredAnswers")
 fun setRequiredAnswers(tv: TextView, count: Int) {
@@ -60,4 +66,29 @@ fun setScore(tv: TextView, gameResult: GameResult) {
             gameResult.gameSettings.minCountOfRightAnswers.toString()
         )
     )
+}
+
+@BindingAdapter("numToString")
+fun setNumTOString(tv: TextView, num: Int) {
+    tv.text = num.toString()
+}
+
+@BindingAdapter("enoughCount")
+fun bindEnoughCount(tv: TextView, state: Boolean) {
+    tv.setTextColor(getColorByState(tv.context, state))
+}
+
+@BindingAdapter("enoughPercent")
+fun bindEnoughPercent(progressBar: ProgressBar, state: Boolean) {
+    progressBar.progressTintList =
+        ColorStateList.valueOf(getColorByState(progressBar.context, state))
+}
+
+private fun getColorByState(context: Context, state: Boolean): Int {
+    val colorResId = if (state) {
+        android.R.color.holo_green_light
+    } else {
+        android.R.color.holo_red_light
+    }
+    return ContextCompat.getColor(context, colorResId)
 }
